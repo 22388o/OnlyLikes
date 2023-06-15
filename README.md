@@ -8,6 +8,11 @@ Absolutely *no* data is stored by us about you. The app runs entirely in your br
 
 Because we store no metrics, we rely on our users submitting bug reports, or letting us know when something does not work the way they would expect. This is the tradeoff involved in respecting our user’s privacy - we rely on you to provide the feedback.
 
+## Opinionated
+* OnlyLikes will not use any external scripts, fonts, or other data. Everything must be hosted on the server running OnlyLikes to protect the privacy of the user.
+* OnlyLikes will not store any user data, except IP addresses, to prevent abuse.
+* OnlyLikes will use the simplest and most transparent options by default, make changes opt-in (not opt-out), and endeavor to make all features optional.
+
 ## Contributions
 
 Contributions are welcome. You must follow best practices to the extent of your ability, and we expect code submissions to follow the naming conventions recommended by the Roslyn compiler/Visual Studio.
