@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace NostrSharp.Events;
+namespace Events;
 
 public class Event
 {

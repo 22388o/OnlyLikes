@@ -1,4 +1,4 @@
-namespace NostrSharp.Events;
+namespace Events;
 
 public class Message
 {
