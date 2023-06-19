@@ -1,7 +1,42 @@
 ﻿@page "/"
+@using Relays;
 
-<PageTitle xmlns="http://www.w3.org/1999/html">Index</PageTitle>
+<PageTitle>Index</PageTitle>
 
-<h1><em>OnlyLikes!</em></h1>
+<h1><em>Nostr Test</em></h1>
 
-We are coming.
+Fetches events from Nostr relays using Blazor WebAssembly.<br />
+Building the roots of a PWA for Nostr.
+<br /><br />
+<button class="btn btn-primary" @onclick="OnRefreshButtonClicked">Refresh</button>
+
+@if (messages.Count == 0)
+{
+    <p><em>Loading... Try clicking refresh!</em></p>
+}
+else
+{
+
+    @foreach (var item in messages)
+    {
+        <div class="container text-wrap" style="overflow-wrap: break-word;">
+        <p>@item.ToString()</p>
+        <br /><br />
+        </div>
+    }
+}
+
+@code {
+    public Relay relay = new Relay(new Uri("wss://relay.damus.io"));
+    private List<string> messages = new();
+    protected override Task OnInitializedAsync()
+    {
+        relay.Listen();
+        relay.Send("""["REQ", "abcde12345", { "kinds":[1] }]""");
+        return base.OnInitializedAsync();
+    }
+
+    private void OnRefreshButtonClicked() {
+        messages = relay.GetEvents();
+    }
+}
