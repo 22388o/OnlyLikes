@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.001.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlyLikes", "OnlyLikes.csproj", "{E755F325-1581-44A6-B58B-BCBE5A5B0BF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlyLikes", ".\OnlyLikesWeb\OnlyLikes.csproj", "{E755F325-1581-44A6-B58B-BCBE5A5B0BF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlyLikesTestbed", ".\OnlyLikesTestbed\OnlyLikesTestbed.csproj", "{9A54F357-19CF-466C-9E42-E195D7B3C633}"
 EndProject
