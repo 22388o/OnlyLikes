@@ -9,6 +9,8 @@ namespace NostrTypes.Relays
 {
     public class Relay
     {
+        public event EventHandler? MessageReceived;
+
         private readonly WebsocketClient _client;
         public List<string> _queue = new();
         public Relay(Uri uri)
@@ -17,6 +19,7 @@ namespace NostrTypes.Relays
             _client.MessageReceived.Subscribe(msg => {
                 Console.WriteLine(msg);
                 _queue.Add(msg.ToString());
+                MessageReceived?.Invoke(this, new());
             });
         }
 
@@ -27,12 +30,18 @@ namespace NostrTypes.Relays
 
         public List<string> GetEvents()
         {
-            return _queue;
+            List<string> listToReturn = new List<string>(_queue);
+            _queue.Clear();
+            return listToReturn;
         }
 
         public void Send(string msg)
         {
             _client.Send(msg);
+        }
+        protected virtual void OnMessageReceived(EventArgs e)
+        {
+            MessageReceived?.Invoke(this, e);
         }
     }
 }

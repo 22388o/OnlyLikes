@@ -2,6 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NostrTypes.Events;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace OnlyLikesTestbed
 {
@@ -16,6 +17,7 @@ namespace OnlyLikesTestbed
             timeline = new();
             relay = new(new Uri("wss://relay.damus.io"));
             timelineView.DataSource = timeline;
+            relay.MessageReceived += relayGotMessage;
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -37,25 +39,36 @@ namespace OnlyLikesTestbed
             {
                 var item = tempEventBuffer[l];
                 if (item == null) continue;
-                JArray? i = JArray.Parse(item);
-                if (i == null || i.First.ToString() == "EOSE") continue;
-                NostrTypes.Events.Event? o = serializer.Deserialize<NostrTypes.Events.Event>(new JsonTextReader(new StringReader(i.Last.ToString())));
+                JArray? m = serializer.Deserialize<JArray>(new JsonTextReader(new StringReader(item)));
+
+                if (m == null || m.Count != 3 || m[0] == null || m[1] == null || m[2] == null) continue;
+                if (m[2].ToString() == "EOSE") continue;
+
+                Event? o = serializer.Deserialize<Event>(new JsonTextReader(new StringReader(m[2].ToString())));
+
                 if (o == null) continue;
                 timeline.Add(o);
-                //JsonTextReader reader = new JsonTextReader(new StringReader(item));
-                //while (reader.Read())
-                //{
-                //    if (reader.Value != null)
-                //    {
-                //        System.Diagnostics.Debug.WriteLine("Token: {0}, Value: {1}", reader.TokenType, reader.Value);
-                //    }
-                //    else
-                //    {
-                //        System.Diagnostics.Debug.WriteLine("Token: {0}", reader.TokenType);
-                //    }
-                //}
             }
             timelineView.DataSource = timeline;
+            tempEventBuffer.Clear();
+        }
+
+        private void relayGotMessage(object? sender, EventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Action action = () =>
+                {
+                    readButton_Click(this, e);
+                    deserializeButton_Click(this, e);
+                };
+                this.Invoke(action);
+            }
+            else
+            {
+                readButton_Click(this, e);
+                deserializeButton_Click(this, e);
+            }
         }
     }
 }
